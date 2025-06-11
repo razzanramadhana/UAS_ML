@@ -263,6 +263,7 @@
       const data = JSON.parse(storedData);
       console.log("Parsed Data:", data); // Debug line
       console.log("Loan Details:", data.loan_details); // Debug line
+      console.log("Recommended Houses:", data.recommended_houses); // Debug recommended houses
       
       const loanDetails = data.loan_details; // Data detail pinjaman
       const predictionStatus = data.prediction;
@@ -299,19 +300,30 @@
           const rekomendasiTitle = document.getElementById('rekomendasi-title');
           const rekomendasiList = document.getElementById('rekomendasi-list');
           
+          console.log("Rekomendasi elements:", { 
+              title: rekomendasiTitle, 
+              list: rekomendasiList 
+          });
+          
+          if (!rekomendasiTitle || !rekomendasiList) {
+              console.error("Rekomendasi elements not found!");
+              return;
+          }
+          
           if (recommendedHouses.length > 0) {
               rekomendasiTitle.style.display = 'block'; 
               rekomendasiList.innerHTML = ''; // Pastikan daftar rekomendasi kosong sebelum mengisi
               recommendedHouses.forEach(house => {
+                  console.log("Creating house card for:", house);
                   const houseCard = `
                       <div class="col-md-6 mb-4">
-                          <div class="property-wrap ftco-animate">
-                              <div class="img d-flex align-items-center justify-content-center" style="background-image: url({{ url_for('static', filename='images/') }}${house.image_url});">
+                          <div class="property-wrap">
+                              <div class="img d-flex align-items-center justify-content-center" style="background-image: url({{ url_for('static', filename='') }}${house.image_url}); height: 200px; background-size: cover; background-position: center;">
                                   <a href="${propertySinglePageBaseUrl.replace('_', house.id)}" class="icon d-flex align-items-center justify-content-center btn-custom">
                                       <span class="ion-ios-link"></span>
                                   </a>
                               </div>
-                              <div class="text">
+                              <div class="text p-3">
                                   <p class="price mb-3"><span class="orig-price">${formatToRupiah(house.harga_idr)}</span></p>
                                   <h3 class="mb-0"><a href="${propertySinglePageBaseUrl.replace('_', house.id)}">${house.nama}</a></h3>
                                   <span class="location d-inline-block mb-3"><i class="ion-ios-pin mr-2"></i>${house.lokasi}</span>
@@ -324,6 +336,7 @@
                           </div>
                       </div>
                   `;
+                  console.log("Generated house card HTML:", houseCard);
                   rekomendasiList.insertAdjacentHTML('beforeend', houseCard);
               });
           } else {

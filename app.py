@@ -351,47 +351,62 @@ def preprocess_kpr_input(form_data):
 
 
 # --- Fungsi untuk mendapatkan rekomendasi rumah dari database ---
-def get_recommended_houses(user_income_total_idr, pokok_pinjaman_idr, property_area_pref=None): # Removed tenor_years, required_bedrooms, required_bathrooms as they are not used in new KPR project context
+def get_recommended_houses(user_income_total_idr, pokok_pinjaman_idr, property_area_pref=None):
+    print(f"Debug - Input parameters:")
+    print(f"user_income_total_idr: {user_income_total_idr}")
+    print(f"pokok_pinjaman_idr: {pokok_pinjaman_idr}")
+    print(f"property_area_pref: {property_area_pref}")
+    
     conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM houses")
     all_houses = [dict(row) for row in cursor.fetchall()]
+    print(f"Debug - All houses from DB: {all_houses}")
     conn.close()
 
     recommended_list = []
     
-    # Aturan Rekomendasi Sederhana:
-    # Based on loan amount and income
-    max_house_price_loan = pokok_pinjaman_idr * 1.5
-    min_house_price_loan = pokok_pinjaman_idr * 0.8 
+    # Based on loan amount and income - with more flexible ranges
+    max_house_price_loan = pokok_pinjaman_idr * 2.0  # Increased from 1.5
+    min_house_price_loan = pokok_pinjaman_idr * 0.5  # Decreased from 0.8
 
     # Assuming user_income_total_idr is combined applicant + coapplicant income IDR
-    # Adjust multipliers as needed for better recommendations
-    max_house_price_income = user_income_total_idr * 5 
-    min_house_price_income = user_income_total_idr * 3 
+    # Adjusted multipliers for more recommendations
+    max_house_price_income = user_income_total_idr * 8  # Increased from 5
+    min_house_price_income = user_income_total_idr * 2  # Decreased from 3
+
+    print(f"Debug - Price ranges:")
+    print(f"min_house_price_loan: {min_house_price_loan}")
+    print(f"max_house_price_loan: {max_house_price_loan}")
+    print(f"min_house_price_income: {min_house_price_income}")
+    print(f"max_house_price_income: {max_house_price_income}")
 
     for house in all_houses:
+        # Make price comparison more lenient
         price_fits_loan = (min_house_price_loan <= house['harga_idr'] <= max_house_price_loan)
         price_fits_income = (min_house_price_income <= house['harga_idr'] <= max_house_price_income)
         
-        if price_fits_loan and price_fits_income:
+        # If either condition is met, consider the house (changed from AND to OR)
+        if price_fits_loan or price_fits_income:  # Changed from AND to OR for more results
             location_match = True 
             if property_area_pref: 
                 house_location_lower = house['lokasi'].lower()
-                if property_area_pref == 'Urban' and not ('kota' in house_location_lower or 'urban' in house_location_lower or 'city' in house_location_lower):
-                    location_match = False
-                elif property_area_pref == 'Semiurban' and not ('semi' in house_location_lower or 'suburban' in house_location_lower):
-                    location_match = False
-                elif property_area_pref == 'Rural' and not ('desa' in house_location_lower or 'rural' in house_location_lower):
-                    location_match = False
+                # Simplified location matching
+                if property_area_pref == 'Urban':
+                    location_match = True  # Consider all Surabaya locations as Urban
+                elif property_area_pref == 'Semiurban':
+                    location_match = True  # Consider all locations as potential semiurban
+                elif property_area_pref == 'Rural':
+                    location_match = 'desa' in house_location_lower
             
             if location_match:
                 recommended_list.append(house)
     
-    recommended_list = sorted(recommended_list, key=lambda x: x['harga_idr'])
+    print(f"Debug - Final recommended list: {recommended_list}")
     
-    return recommended_list[:6] # Mengambil hingga 6 rekomendasi teratas
+    recommended_list = sorted(recommended_list, key=lambda x: x['harga_idr'])
+    return recommended_list[:6]  # Return up to 6 recommendations
 
 
 # --- Flask Routes ---
