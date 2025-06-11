@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Smart Approve</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.timepicker.css') }}">
+
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">SmartApprove</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="{{ url_for('home') }}" class="nav-link">Beranda</a></li>
+            <li class="nav-item"><a href="{{ url_for('properties_page') }}" class="nav-link">Properti</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section class="hero-wrap hero-wrap-2 ftco-degree-bg js-fullheight" style="background-image: url('{{ url_for('static', filename='images/bg_1.jpg') }}');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="overlay-2"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-center">
+          <div class="col-md-9 ftco-animate pb-5 mb-5 text-center">
+            <h1 class="mb-3 bread">Properties Details</h1>
+            <p class="breadcrumbs"><span class="mr-2"><a href="{{ url_for('home') }}">Beranda <i class="ion-ios-arrow-forward"></i></a></span> <span>Properties Details<i class="ion-ios-arrow-forward"></i></span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ftco-section ftco-property-details">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12">
+            <div class="property-details">
+              <div class="img rounded" style="background-image: url('{{ url_for('static', filename=house.image_url) }}');"></div>
+              <div class="text">
+                <h2>{{ house.nama }}</h2>
+                <h3 id="harga-properti-display">Rp {{ "{:,.0f}".format(house.harga_idr).replace(",",".") }}</h3> <span class="subheading"><i class="ion-ios-pin mr-2"></i>{{ house.lokasi }}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 pills">
+                <div class="bd-example bd-example-tabs">
+                  <div class="d-flex">
+                    <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-controls="pills-description" aria-expanded="true">Fitur</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="pills-loan-form-tab" data-toggle="pill" href="#pills-loan-form" role="tab" aria-controls="pills-loan-form" aria-expanded="true">Ajukan Pinjaman</a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <ul class="features">
+                            <li><span class="ion-ios-checkmark-circle"></span>Luas Bangunan: {{ house.luas_bangunan_m2 }} m2</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Kamar Tidur: {{ house.kamar_tidur }}</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Kamar Mandi: {{ house.kamar_mandi }}</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Garasi: 1</li> </ul>
+                        </div>
+                        <div class="col-md-4">
+                          <ul class="features">
+                            <li><span class="ion-ios-checkmark-circle"></span>Luas Tanah: {{ house.luas_tanah_m2 }} m2</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Tahun Pembuatan: {{ house.tahun_pembuatan }}</li>
+                            <li class="check"><span class="ion-ios-checkmark-circle"></span>Air</li>
+                            <li class="check"><span class="ion-ios-checkmark-circle"></span>Listrik</li>
+                          </ul>
+                        </div>
+                        <div class="col-md-4">
+                          <ul class="features">
+                            <li><span class="ion-ios-checkmark-circle"></span>Sertifikat: SHM</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Akses Jalan: Lebar</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Keamanan: 24 Jam</li>
+                            <li><span class="ion-ios-checkmark-circle"></span>Dekat Fasum</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-loan-form" role="tabpanel" aria-labelledby="pills-loan-form-tab">
+                      <form id="loan-form" method="POST" action="{{ url_for('predict') }}">
+                        <div class="row mb-3">
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="gender">Jenis Kelamin</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="gender" name="Gender" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="Male">Laki-laki</option>
+                                    <option value="Female">Perempuan</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="married">Status Pernikahan</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="married" name="Married" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="Yes">Menikah</option>
+                                    <option value="No">Belum Menikah</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="dependents">Jumlah Tanggungan</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="dependents" name="Dependents" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3+">3+</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="education">Pendidikan Terakhir</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="education" name="Education" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="Graduate">Sarjana</option>
+                                    <option value="Not Graduate">Non-Sarjana</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="self_employed">Pekerja Mandiri</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="self_employed" name="Self_Employed" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="Yes">Ya</option>
+                                    <option value="No">Tidak</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="credit_history">Riwayat Kredit</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="credit_history" name="Credit_History" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="1">Baik</option>
+                                    <option value="0">Buruk</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="property_area">Area Properti</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="property_area" name="Property_Area" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="Urban">Perkotaan (Urban)</option>
+                                    <option value="Semiurban">Semi Perkotaan (Semiurban)</option>
+                                    <option value="Rural">Pedesaan (Rural)</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="applicant_income">Pendapatan Pemohon</label>
+                              <div class="form-field">
+                                <input type="text" class="form-control" id="applicant_income" name="ApplicantIncome" placeholder="">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="coapplicant_income">Pendapatan Co-Pemohon</label>
+                              <div class="form-field">
+                                <input type="text" class="form-control" id="coapplicant_income" name="CoapplicantIncome" placeholder="">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="harga_rumah">Harga Rumah</label>
+                              <div class="form-field">
+                                <input type="text" class="form-control" id="harga_rumah" name="harga_rumah" placeholder="Contoh: 750.000.000" readonly> 
+                                <input type="hidden" id="harga_rumah_raw" name="harga_rumah_raw_value">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="uang_muka">Uang Muka</label>
+                              <div class="form-field">
+                                <input type="text" class="form-control" id="uang_muka" name="uang_muka" placeholder="">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4">
+                            <div class="form-group">
+                              <label for="loan_amount_term">Jangka Waktu Pinjaman (Bulan)</label>
+                              <div class="form-field">
+                                <div class="select-wrap">
+                                  <select id="loan_amount_term" name="Loan_Amount_Term" class="form-control">
+                                    <option value="" disabled selected hidden></option>
+                                    <option value="360">360 Bulan (30 Tahun)</option>
+                                    <option value="180">180 Bulan (15 Tahun)</option>
+                                    <option value="120">120 Bulan (10 Tahun)</option>
+                                    <option value="60">60 Bulan (5 Tahun)</option>
+                                    <option value="36">36 Bulan (3 Tahun)</option>
+                                    <option value="12">12 Bulan (1 Tahun)</option>
+                                  </select>
+                                  <input type="hidden" id="loan_amount_term_code" name="Loan_Amount_Term_Code" value="">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3 justify-content-center">
+                          <div class="col-lg-4">
+                            <div class="form-group text-center">
+                              <label for="#"></label>
+                              <div class="form-field mt-2">
+                                <input type="submit" value="PREDIKSI PERSETUJUAN" class="form-control btn btn-primary" style="background-color: #d8c75b; border: none;">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="popup-alert" class="popup-alert" style="display:none; position:fixed; z-index:9999; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+            <div class="popup-content bg-white p-4 rounded shadow text-center" style="max-width:400px; width:90%;">
+              <h4 id="popup-title"></h4> <p id="popup-message"></p> <button id="close-alert" class="btn btn-secondary mt-3">Tutup</button>
+            </div>
+          </div>
+
+        </section>
+        
+
+        <footer class="ftco-footer ftco-section">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                  <h2 class="ftco-heading-2">Smart Approve</h2>
+                  <p>Cari rumah sesuai kemampuan, simulasikan cicilan, dan prediksi kelayakan KPR Anda.</p>
+                  <ul class="ftco-footer-social list-unstyled mt-5">
+                    <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                    <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                    <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="ftco-footer-widget mb-4 ml-md-4">
+                  <h2 class="ftco-heading-2">Community</h2>
+                  <ul class="list-unstyled">
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Search Properties</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>For Agents</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Reviews</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>FAQs</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="ftco-footer-widget mb-4 ml-md-4">
+                  <h2 class="ftco-heading-2">About Us</h2>
+                  <ul class="list-unstyled">
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Our Story</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Meet the team</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Careers</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md">
+                 <div class="ftco-footer-widget mb-4">
+                  <h2 class="ftco-heading-2">Company</h2>
+                  <ul class="list-unstyled">
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>About Us</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Press</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Contact</a></li>
+                    <li><a href="#"><span class="icon-long-arrow-right mr-2"></span>Careers</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                  <h2 class="ftco-heading-2">Have a Questions?</h2>
+                  <div class="block-23 mb-3">
+                    <ul>
+                      <li><span class="icon icon-map-marker"></span><span class="text">Gedung Nano, UNAIR C, Surabaya</span></li>
+                      <li><a href="#"><span class="icon icon-phone"></span><span class="text">+623456789</span></a></li>
+                      <li><a href="#"><span class="icon icon-envelope pr-4"></span><span class="text">kelompok@8.com</span></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-center">
+     
+                <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+      </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+        
+      
+
+      <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+      <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.waypoints.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.animateNumber.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery.timepicker.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/scrollax.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/google-map.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+      <script>
+          // Utility function to format numbers to Rupiah (client-side display)
+          function formatToRupiah(angka) {
+              if (typeof angka !== 'number') {
+                  angka = parseFloat(angka); // Ensure it's a number
+              }
+              if (isNaN(angka)) return '-';
+              return 'Rp ' + angka.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+          }
+
+          // This function is for getting a raw number from a formatted STRING (e.g., "Rp 123.456.789")
+          function getRawNumberFromFormattedString(formattedStr) {
+              // Remove "Rp", dots, and commas. This is the most robust for large whole numbers.
+              const cleanedStr = String(formattedStr).replace(/[^0-9]/g, ''); 
+              return parseFloat(cleanedStr);
+          }
+
+          // Format input to Rupiah as user types
+          function formatInputToRupiah(inputElement) {
+              inputElement.addEventListener("input", function () {
+                  // Only process if the input is applicant_income, coapplicant_income, or uang_muka
+                  // harga_rumah is readonly, so no need to format its input
+                  if (this.id === 'applicant_income' || this.id === 'coapplicant_income' || this.id === 'uang_muka') {
+                      let angka = this.value.replace(/[^0-9]/g, "");
+                      if (!angka) {
+                          this.value = "";
+                          return;
+                      }
+                      this.value = formatToRupiah(parseFloat(angka));
+                  }
+              });
+          }
+
+          // Apply formatting to relevant input fields
+          const applicantIncomeInput = document.getElementById("applicant_income");
+          const coapplicantIncomeInput = document.getElementById("coapplicant_income");
+          const uangMukaInput = document.getElementById("uang_muka");
+          const hargaRumahInput = document.getElementById("harga_rumah");
+          // Hidden input for the raw harga_rumah value
+          const hargaRumahRawInput = document.getElementById("harga_rumah_raw");
+
+
+          if (applicantIncomeInput) formatInputToRupiah(applicantIncomeInput);
+          if (coapplicantIncomeInput) formatInputToRupiah(coapplicantIncomeInput);
+          if (uangMukaInput) formatInputToRupiah(uangMukaInput);
+
+          // Set harga rumah (readonly) and its hidden raw value when the page loads
+          document.addEventListener("DOMContentLoaded", function () {
+              if (hargaRumahInput && hargaRumahRawInput) {
+                  const rawHargaFromFlask = {{ house.harga_idr | tojson }}; // This is the raw number from Flask
+                  hargaRumahInput.value = formatToRupiah(rawHargaFromFlask); // Format for display in readonly field
+                  hargaRumahRawInput.value = rawHargaFromFlask; // Store the raw number in the hidden input
+              }
+          });
+          
+          const hasilSimulasiUrl = "{{ url_for('hasil_simulasi_page') }}";
+
+          document.addEventListener("DOMContentLoaded", function () {
+              // This block is no longer needed as hargaRumahInput is set directly from Flask variable
+              // const hargaPropertiDisplayElement = document.getElementById("harga-properti-display");
+              // const hargaRumahInputField = document.getElementById("harga_rumah"); 
+              // if (hargaPropertiDisplayElement && hargaRumahInputField) {
+              //     const rawHargaDisplay = getRawNumberFromFormattedString(hargaPropertiDisplayElement.textContent);
+              //     hargaRumahInputField.value = formatToRupiah(rawHargaDisplay); 
+              // }
+
+              const form = document.getElementById("loan-form"); 
+              const popup = document.getElementById("popup-alert");
+              const popupTitle = document.getElementById("popup-title");
+              const popupMessage = document.getElementById("popup-message");
+              const closeBtn = document.getElementById("close-alert");
+
+              form.addEventListener("submit", function (e) {
+                  e.preventDefault();
+
+                  const formData = new FormData(form);
+
+                  // Retrieve values, ensuring they are raw numbers.
+                  // For income and uang_muka, parse from their formatted strings.
+                  // For harga_rumah, use the value from the hidden input.
+                  const applicantIncome = getRawNumberFromFormattedString(document.getElementById('applicant_income').value);
+                  const coapplicantIncome = getRawNumberFromFormattedString(document.getElementById('coapplicant_income').value);
+                  const hargaRumah = parseFloat(document.getElementById('harga_rumah_raw').value); // Use the raw value from the hidden input
+                  const uangMuka = getRawNumberFromFormattedString(document.getElementById('uang_muka').value);
+                  const loanAmountTerm = document.getElementById('loan_amount_term').value; // This is a select, its value is already raw.
+
+                  // Set values to formData. These will be used by preprocess_kpr_input in app.py
+                  // Note: The names here should match what app.py expects, e.g., 'ApplicantIncome'
+                  formData.set('ApplicantIncome', applicantIncome);
+                  formData.set('CoapplicantIncome', coapplicantIncome);
+                  formData.set('harga_rumah', hargaRumah); // Pass the raw numeric value
+                  formData.set('uang_muka', uangMuka); 
+                  formData.set('Loan_Amount_Term', loanAmountTerm);
+                  
+                  // For other categorical fields, formData automatically includes them by 'name' attribute.
+                  // e.g., Gender, Married, Dependents, Education, Self_Employed, Credit_History, Property_Area
+
+                  fetch('/predict', {
+                      method: 'POST',
+                      body: formData
+                  })
+                  .then(response => {
+                      if (!response.ok) {
+                          return response.json().then(err => { throw new Error(err.message || 'Server error'); });
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                      if (data.status === "success") {
+                          localStorage.setItem('loanPredictionResult', JSON.stringify(data)); 
+                          window.location.href = hasilSimulasiUrl; 
+                      } else {
+                          popupTitle.innerText = "Error Prediksi";
+                          popupMessage.innerHTML = `Terjadi kesalahan pada prediksi: ${data.message}`;
+                          popup.style.display = "flex";
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error during prediction fetch:', error);
+                      popupTitle.innerText = "Kesalahan Jaringan / Server";
+                      popupMessage.innerHTML = `Tidak dapat terhubung ke server atau terjadi kesalahan: ${error.message}`;
+                      popup.style.display = "flex";
+                  });
+              });
+
+              if (closeBtn) {
+                closeBtn.addEventListener("click", () => {
+                  popup.style.display = "none";
+                });
+              }
+          });
+
+          // Add this JavaScript code before the form submit handler
+          const loanAmountTermSelect = document.getElementById('loan_amount_term');
+          const loanAmountTermCodeInput = document.getElementById('loan_amount_term_code');
+
+          loanAmountTermSelect.addEventListener('change', function() {
+              // Set the code based on the selected term
+              const selectedTerm = parseInt(this.value);
+              let termCode;
+              if (selectedTerm >= 360) termCode = '360';
+              else if (selectedTerm >= 180) termCode = '180';
+              else if (selectedTerm >= 120) termCode = '120';
+              else if (selectedTerm >= 60) termCode = '60';
+              else if (selectedTerm >= 36) termCode = '36';
+              else termCode = '12';
+              
+              loanAmountTermCodeInput.value = termCode;
+          });
+      </script>
+
+        
+      </body>
+    </html>
